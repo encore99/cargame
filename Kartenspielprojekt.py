@@ -24,7 +24,7 @@ class Application(tk.Tk):
 
     def add_to_hand(self):
         # Passe den Pfad zum Ordner mit deinen Bildern an
-        image_folder = "Zombie Deck Test"
+        image_folder = "deck\ZombieDeckTest"
         images = os.listdir(image_folder)
         if images:
             random_image = random.choice(images)
