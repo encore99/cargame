@@ -1,7 +1,7 @@
 import json                             #Import der JSON Lib
 
 # Pfad zur Konfigurationsdatei
-config_file = ".\credentials\config.json"
+config_file = "\\credentials"
 
 # Funktion zum Lesen der Konfigurationsdatei
 def read_config():
