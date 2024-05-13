@@ -45,6 +45,7 @@ class Player:
 class MauMau:
     def __init__(self, num_players, root):
         self.root = root
+        self.num_players = num_players
         self.db_connection = mysql.connector.connect(
             host="localhost",
             user="test",
@@ -53,10 +54,7 @@ class MauMau:
         )
         self.cursor = self.db_connection.cursor()
         self.create_highscore_table()
-
-        self.deck = Deck()
-        self.players = [Player(f"Player {i + 1}") for i in range(num_players)]
-        self.discard_pile = []
+        self.players = []
         self.create_gui()
 
     def create_highscore_table(self):
@@ -71,11 +69,13 @@ class MauMau:
             player.draw_hand(self.deck, num_cards)
 
     def start_game(self):
+        self.deck = Deck()
         self.deal_cards(5)
-        self.discard_pile.append(self.deck.draw_card())
+        self.discard_pile = [self.deck.draw_card()]  # place one card on the discard pile to start
 
     def play_round(self):
         current_player = 0
+        skip_next_player = False
         while True:
             player = self.players[current_player]
             if len(player.hand) == 0:
@@ -88,12 +88,23 @@ class MauMau:
             action = self.get_player_action(player)
             if action == 'draw':
                 drawn_card = self.deck.draw_card()
+                if self.discard_pile[-1].rank == '7':
+                    messagebox.showinfo("Mau-Mau", f"{player.name} played a 7! The next player draws 2 cards.")
+                    self.players[(current_player + 1) % len(self.players)].draw_hand(self.deck, 2)
                 player.hand.append(drawn_card)
             else:
                 card_index = int(action)
                 selected_card = player.play_card(card_index, self.discard_pile)
-                if selected_card.rank == '8':
-                    messagebox.showinfo("Mau-Mau", "You played an 8! Skipping next player's turn.")
+                if selected_card.rank == '7':
+                    messagebox.showinfo("Mau-Mau", f"{player.name} played a 7! The next player draws 2 cards.")
+                    self.players[(current_player + 1) % len(self.players)].draw_hand(self.deck, 2)
+                elif selected_card.rank == '8':
+                    if skip_next_player:
+                        messagebox.showinfo("Mau-Mau", f"{player.name} played an 8! Skipping next player's turn.")
+                        skip_next_player = False
+                    else:
+                        messagebox.showinfo("Mau-Mau", f"{player.name} played an 8! The next player is skipped.")
+                        skip_next_player = True
                     current_player = (current_player + 1) % len(self.players)
                 elif self.check_win(player):
                     messagebox.showinfo("Game Over", f"{player.name} wins!")
@@ -131,15 +142,23 @@ class MauMau:
         return self.action
 
     def create_gui(self):
-        self.hand_label = tk.Label(self.root, text="Your Hand:")
-        self.hand_label.grid(row=0, column=0)
-        self.discard_label = tk.Label(self.root, text="Discard Pile Top Card:")
-        self.discard_label.grid(row=0, column=1)
+        tk.Label(self.root, text="Enter Player Names:").grid(row=0, column=0)
+        self.player_names = []
+        for i in range(self.num_players):
+            entry = tk.Entry(self.root)
+            entry.grid(row=i, column=1)
+            self.player_names.append(entry)
+        tk.Button(self.root, text="Start Game", command=self.start_game).grid(row=self.num_players, column=0,
+                                                                              columnspan=2)
+        self.hand_label = tk.Label(self.root, text="")
+        self.hand_label.grid(row=self.num_players + 1, column=0)
+        self.discard_label = tk.Label(self.root, text="")
+        self.discard_label.grid(row=self.num_players + 1, column=1)
 
 
 # GUI initialisieren und Spiel starten
 root = tk.Tk()
 root.title("Mau-Mau")
 game = MauMau(2, root)
-game.start_game()
+root.mainloop()
 game.play_round()
