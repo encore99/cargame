@@ -1,0 +1,17 @@
+Mau Mau Regeln
+Aufgrund seiner langen Geschichte und stetigen Entwicklung gibt es nicht die einen richtigen Mau Mau Regeln.
+Je nach Region können die speziellen Regeln oft stark variieren.
+Einige Mau Mau Spielregeln werden aber fast überall anerkannt.
+Diese haben wir dir im Folgenden zusammengefasst:
+
+Mau: Wenn ein Spieler die vorletzte Karte ablegt, muss er Mau rufen. Vergisst er darauf, muss er eine Strafkarte ziehen.
+Mau Mau: Wenn ein Spieler seine letzte Karte ablegt, muss er Mau Mau rufen. Vergisst er dies, muss er eine Strafkarte ziehen und das Spiel geht weiter.
+Neben den allgemeinen Mau Mau Regeln gibt es auch spezifische Regeln für einige Karten:
+
+Sieben: Legst du eine Sieben, muss der Spieler nach dir 2 Karten ziehen.
+        Hat dieser aber ebenfalls eine Sieben, kann er diese darauf legen und der nächste Spieler muss 4 Karten ziehen und so weiter.
+Acht:   Legst du eine Acht, muss der Spieler nach dir eine Runde aussetzen.
+Neun:   Legst du eine Neun, bist du nochmal dran.
+Bube:   Der Bube darf auf jede beliebige Farbe gelegt werden.
+        Legst du einen Buben, darfst du dir außerdem eine neue Farbe wünschen.
+        Aber Achtung: Es darf bei Mau Mau Bube auf Bube nicht gelegt werden!
