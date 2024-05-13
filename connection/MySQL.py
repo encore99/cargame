@@ -1,4 +1,3 @@
-import mysql.connector                  #Import von der MySQL Lib
 import json                             #Import der JSON Lib
 
 # Pfad zur Konfigurationsdatei
