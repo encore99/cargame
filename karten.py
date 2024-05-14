@@ -55,9 +55,9 @@ class MauMau:
         self.cursor = self.db_connection.cursor()
         self.create_tables()
         self.players = []
-        self.add_players()  # Füge Spieler hinzu, bevor das GUI erstellt wird
+        self.add_players()  # Füge Spieler hinzu, bevor das GUI erstellt wird!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         self.create_gui()
-        self.start_game()  # Starte das Spiel nachdem die Spieler hinzugefügt wurden
+        self.start_game()  # Starte das Spiel nachdem die Spieler hinzugefügt wurden!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     def create_tables(self):
         self.cursor.execute("CREATE TABLE IF NOT EXISTS Players (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
