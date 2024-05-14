@@ -55,12 +55,19 @@ class MauMau:
         self.cursor = self.db_connection.cursor()
         self.create_tables()
         self.players = []
+        self.add_players()  # Füge Spieler hinzu, bevor das GUI erstellt wird
         self.create_gui()
+        self.start_game()  # Starte das Spiel nachdem die Spieler hinzugefügt wurden
 
     def create_tables(self):
         self.cursor.execute("CREATE TABLE IF NOT EXISTS Players (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255))")
         self.cursor.execute(
             "CREATE TABLE IF NOT EXISTS Games (id INT AUTO_INCREMENT PRIMARY KEY, winner_id INT, FOREIGN KEY (winner_id) REFERENCES Players(id), date_played DATE)")
+
+    def add_players(self):
+        for i in range(self.num_players):
+            player_name = f"Player {i+1}"
+            self.players.append(Player(player_name))
 
     def add_player_to_database(self, name):
         self.cursor.execute("INSERT INTO Players (name) VALUES (%s)", (name,))
@@ -142,28 +149,33 @@ class MauMau:
             self.action = self.card_entry.get()
             self.root.quit()
 
-        tk.Label(self.root, text="Enter the index of the card you want to play (or 'draw' to draw a card):").grid(row=2,
-                                                                                                                  column=0)
+        tk.Label(self.root, text="Enter the index of the card you want to play (or 'draw' to draw a card):").grid(row=2, column=0)
         self.card_entry = tk.Entry(self.root)
         self.card_entry.grid(row=2, column=1)
-        tk.Button(self.root, text="Draw Card", command=draw_card).grid(row=3, column=0)
-        tk.Button(self.root, text="Play Card", command=play_card).grid(row=3, column=1)
-        self.root.mainloop()
+        tk.Button(self.root, text="Draw Card", command=draw_card).grid(row=3, column=0, padx=5, pady=5)
+        tk.Button(self.root, text="Play Card", command=play_card).grid(row=3, column=1, padx=5, pady=5)
+        while self.action is None:
+            self.root.update()
+        self.root.quit()
         return self.action
 
     def create_gui(self):
-        tk.Label(self.root, text="Enter Player Names:").grid(row=0, column=0)
+        tk.Label(self.root, text="Enter Player Names:").grid(row=0, column=0, columnspan=2)
+
         self.player_names = []
         for i in range(self.num_players):
             entry = tk.Entry(self.root)
-            entry.grid(row=i, column=1)
+            entry.grid(row=i+1, column=1, padx=5, pady=5)
             self.player_names.append(entry)
-        tk.Button(self.root, text="Start Game", command=self.start_game).grid(row=self.num_players, column=0,
-                                                                              columnspan=2)
+
+        start_button = tk.Button(self.root, text="Start Game", command=self.start_game)
+        start_button.grid(row=self.num_players+1, column=0, columnspan=2, padx=5, pady=5)
+
         self.hand_label = tk.Label(self.root, text="")
-        self.hand_label.grid(row=self.num_players + 1, column=0)
+        self.hand_label.grid(row=self.num_players+2, column=0, columnspan=2, padx=5, pady=5)
+
         self.discard_label = tk.Label(self.root, text="")
-        self.discard_label.grid(row=self.num_players + 1, column=1)
+        self.discard_label.grid(row=self.num_players+3, column=0, columnspan=2, padx=5, pady=5)
 
 
 # GUI initialisieren und Spiel starten
